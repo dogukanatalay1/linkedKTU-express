@@ -1,4 +1,4 @@
-const ApiSuccess = require('./apiSuccess');
+const ApiSuccess = require('./api-success');
 
 class ApiDataSuccess extends ApiSuccess {
   static toJSON(data, message, statusCode) {
