@@ -1,4 +1,4 @@
-const sequelize = require('../scripts/helpers/sequelize-helper.js')
+const sequelize = require('../scripts/helpers/sequelize.helper.js')
 
 sequelize
     .authenticate()

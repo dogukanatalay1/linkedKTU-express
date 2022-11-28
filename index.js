@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/students', routes.student)
+app.use('/lecturers', routes.lectuter)
+app.use('/employers', routes.employer)
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
