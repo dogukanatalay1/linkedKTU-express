@@ -5,6 +5,7 @@ const routes = require('./routes');
 const { getAll } = require('./services/base-service')
 
 const app = express();
+app.use(express.json())
 
 app.use(cors(
   {
