@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const apiError = require('../responses/error/api-error');
+const apiError = require('../scripts/responses/error/api-error');
 
 const bodyValidator = (schema) => (req, res, next) => {
     const options = {
@@ -28,4 +28,5 @@ const bodyValidator = (schema) => (req, res, next) => {
     next();
 };
 
-module.exports = bodyValidator;
+module.exports = bodyValidator
+ 
