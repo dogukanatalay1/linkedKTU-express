@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../helpers/sequelize.helpers');
+const sequelize = require('../scripts/helpers/sequelize.helper');
 
-const BaseUser = sequelize.define(
-  'BaseUser',
+const BaseUserModel = sequelize.define(
+  'BaseUserModel',
   {
     _id: {
       type: DataTypes.STRING,
@@ -35,4 +35,4 @@ const BaseUser = sequelize.define(
   },
 );
 
-module.exports = BaseUser;
+module.exports = BaseUserModel;
