@@ -8,8 +8,6 @@ const { loginValidation } = require('../validations/student.validation');
 
 router
   .route('/login')
-  .post(studentController.login)
-
+  .post(studentController.login);
 
 module.exports = router;
- 

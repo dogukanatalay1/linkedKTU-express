@@ -24,6 +24,7 @@
     "http-status": "^1.5.3",
     "httpstatus": "^1.0.0",
     "joi": "^17.7.0",
+    "joi-password": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.8"

@@ -2,31 +2,31 @@ const httpStatus = require('http-status');
 const apiError = require('../scripts/responses/error/api-error');
 
 const bodyValidator = (schema) => (req, res, next) => {
-    const options = {
-        errors: { wrap: { label: "'" } },
-        abortEarly: false,
-    };
+  const options = {
+    errors: { wrap: { label: "'" } },
+    abortEarly: false,
+  };
 
-    if (
-        Object.keys(req.body || {}).length === 0 &&
-        Object.keys(req.files || {}).length === 0
-    ) {
-        apiError('Request body must not be empty', httpStatus.BAD_REQUEST, res);
-        throw Error();
-    }
+  if (
+    Object.keys(req.body || {}).length === 0
+        && Object.keys(req.files || {}).length === 0
+  ) {
+    apiError('Request body must not be empty', httpStatus.BAD_REQUEST, res);
+    throw Error();
+  }
 
-    const { error } = schema.validate(req.body, options);
+  const { error } = schema.validate(req.body, options);
+  // ????? validate?
 
-    if (error) {
-        const errorMessage = error.details
-            .map((detail) => detail.message)
-            .join(', ');
-        apiError(errorMessage, httpStatus.BAD_REQUEST, res);
-        throw Error();
-    }
+  if (error) {
+    const errorMessage = error.details
+      .map((detail) => detail.message)
+      .join(', ');
+    apiError(errorMessage, httpStatus.BAD_REQUEST, res);
+    throw Error();
+  }
 
-    next();
+  next();
 };
 
-module.exports = bodyValidator
- 
+module.exports = bodyValidator;

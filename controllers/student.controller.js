@@ -8,40 +8,40 @@ const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const StudentModel = require('../models/student.model')
 
 const login = async (req, res) => {
-  console.log(req.body);
+    console.log(req.body);
 
-  const student = await getOneByQuery(StudentModel, {
-      email: req.body.email,
-  });
+    const student = await getOneByQuery(StudentModel, {
+        email: req.body.email,
+    });
 
-  if (student <= 0) {
-      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
-      throw Error();
-  }
+    if (student <= 0) {
+        ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
+        throw Error();
+    }
 
-  const validPassword = await bcrypt.compare(
-      req.body.password,
-      student.dataValues.password
-  );
+    const validPassword = await bcrypt.compare(
+        req.body.password,
+        student.password
+    );
 
-  if (!validPassword) {
-      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
-      throw Error();
-  }
+    if (!validPassword) {
+        ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
+        throw Error();
+    }
 
-  // ? Create And Assign A Token
-  const token = createLoginToken(student, res);
-  // await ???
+    // ? Create And Assign A Token
+    const token = createLoginToken(student, res);
+    // await ???
 
-  ApiDataSuccess(
-      'Login Success',
-      { access_token: token },
-      true,
-      httpStatus.OK,
-      res
-  );
+    ApiDataSuccess(
+        'Login Success',
+        { access_token: token },
+        true,
+        httpStatus.OK,
+        res
+    );
 
- 
+
 };
 
 module.exports = { login }
