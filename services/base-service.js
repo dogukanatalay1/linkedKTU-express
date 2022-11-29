@@ -1,5 +1,6 @@
 getAll = async (model) => {
   const dbQuery = ''
+
   return dbQuery;
 };
 
