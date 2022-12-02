@@ -10,10 +10,10 @@ class ApiDataSuccess extends ApiSuccess {
     };
   }
 
-  static send(data, message, statusCode, res) {
+  send(data, message, statusCode, res) {
     return res
-      .status(statusCode)
-      .json(ApiDataSuccess.toJSON(data, message, statusCode));
+      // .status(statusCode)
+      // .json(ApiDataSuccess.toJSON(data, message, statusCode));
   }
 }
 
