@@ -20,19 +20,3 @@ const createLoginToken = (user, res) => {
 };
 
 module.exports = { createLoginToken };
-
-// const JWT = require('jsonwebtoken');
-
-// const generateAccessToken = (data) => JWT.sign({ data }, process.env.JWT_ACCESS_SECRET, {
-//   expiresIn: process.env.JWT_ACCESS_EXP,
-// });
-
-// const generateRefreshToken = (data) => JWT.sign({ data }, process.env.JWT_REFRESH_SECRET, {
-//   expiresIn: process.env.JWT_REFRESH_EXP,
-// });
-
-
-// module.exports = {
-//   generateAccessToken,
-//   generateRefreshToken,
-// };

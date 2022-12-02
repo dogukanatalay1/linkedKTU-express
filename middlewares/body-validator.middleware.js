@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const apiError = require('../scripts/responses/error/api-error');
+const ApiError = require('../scripts/responses/error/api-error');
 
 const bodyValidator = (schema) => (req, res, next) => {
   const options = {
@@ -9,22 +9,22 @@ const bodyValidator = (schema) => (req, res, next) => {
 
   if (
     Object.keys(req.body || {}).length === 0
-        && Object.keys(req.files || {}).length === 0
+    && Object.keys(req.files || {}).length === 0
   ) {
-    apiError('Request body must not be empty', httpStatus.BAD_REQUEST, res);
-    throw Error();
+    const error = new ApiError('Request body must not be empty', httpStatus.BAD_REQUEST, res);
+    throw Error(error);
   }
 
-  const { error } = schema.validate(req.body, options);
+  // const { error } = schema.validate(req.body, options);
   // ????? validate?
 
-  if (error) {
-    const errorMessage = error.details
-      .map((detail) => detail.message)
-      .join(', ');
-    apiError(errorMessage, httpStatus.BAD_REQUEST, res);
-    throw Error();
-  }
+  // if (error) {
+  //   const errorMessage = error.details
+  //     .map((detail) => detail.message)
+  //     .join(', ');
+  //   const error = new ApiError(errorMessage, httpStatus.BAD_REQUEST, res);
+  //   throw Error(error);
+  // }
 
   next();
 };
