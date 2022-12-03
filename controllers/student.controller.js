@@ -1,11 +1,10 @@
 const httpStatus = require('http-status');
 // const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
-const ApiSuccess = require('../scripts/responses/success/api-success');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
 const { getOneByQuery, updateByQuery } = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
-const StudentModel = require('../models/student.model')
+const StudentModel = require('../models/student.model');
 
 const login = async (req, res) => {
     console.log(req.body);
@@ -35,15 +34,15 @@ const login = async (req, res) => {
     // const token = createLoginToken(student, res);
     // await ???
 
-    const success = new ApiDataSuccess(
-        'Login Success',
-        // { access_token: token },
-        { access_token: 'dasdsa' },
-        true,
-        httpStatus.OK,
-        res
-    )
-    success.send()
+    // const success = new ApiDataSuccess(
+    //     'Login Success',
+    //     // { access_token: token },
+    //     { access_token: 'dasdsa' },
+    //     true,
+    //     httpStatus.OK,
+    //     res
+    // )
+    // success.send()
 };
 
 let students = [
@@ -112,14 +111,14 @@ getStudent = (req, res) => {
 
     const student = students.find((student) => id == student.id)
 
-    if(!student) {
-        return res.status(404).json({
-            message: `there is no student with this id: ${id}`,
-            success: false
-        })
+    if (!student) {
+        const error = new ApiError(`There is no student with this id: ${id}`, httpStatus.NOT_FOUND)
+        throw Error(error)
     }
 
-    res.status(200).send(student)
+    // res.status(200).send(student)
+
+    new ApiDataSuccess("Student with given id found",httpStatus.OK, res, student)
 }
 
 module.exports = { login, getAllStudents, getStudent }

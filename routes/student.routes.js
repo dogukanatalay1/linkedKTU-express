@@ -1,8 +1,6 @@
 const express = require('express');
 const studentController = require('../controllers/student.controller');
-
 const router = express.Router();
-
 const bodyValidator = require('../middlewares/body-validator.middleware');
 const schema = require('../validations/student.validation');
 
