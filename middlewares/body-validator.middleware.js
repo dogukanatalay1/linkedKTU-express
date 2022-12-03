@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { func } = require('joi');
 const ApiError = require('../scripts/responses/error/api-error');
 
 const bodyValidator = (schema) => (req, res, next) => {

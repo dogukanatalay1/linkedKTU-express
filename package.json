@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "14.x"
-  },
   "contributors": [
     {
       "name": "Dogukan Atalay",
@@ -31,7 +28,7 @@
     "joi-password": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.25.8"
+    "sequelize": "^6.26.0"
   },
   "devDependencies": {
     "eslint": "^8.28.0",
