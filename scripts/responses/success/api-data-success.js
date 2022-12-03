@@ -11,7 +11,11 @@ class ApiDataSuccess {
   static send(message, statusCode, res, data) {
     console.log('statuscodeee: ' + statusCode)
     
-    res.status(statusCode).json(data)
+    res.status(statusCode).json({
+      data,
+      message,
+      success: true
+    })
   }  
 }
 
