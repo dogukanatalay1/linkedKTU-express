@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
 const ApiSuccess = require('../scripts/responses/success/api-success');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
@@ -63,9 +63,7 @@ let students = [
         school: 'KTU',
         city: 'Trabzon',
         technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['guzin ulutas']
+        lecturersThatApproved: null
     },
     {
         id: 1,
@@ -83,9 +81,7 @@ let students = [
         school: 'KTU',
         city: 'Trabzon',
         technologies: ['flutter', 'dart', 'Java', 'leetcode'],
-        experience: 'calismadim',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['mustafa ulutas']
+        lecturersThatApproved: null
     },
     {
         id: 2,
@@ -103,29 +99,7 @@ let students = [
         school: 'KTU',
         city: 'Trabzon',
         technologies: ['C', 'C++', 'FPGA'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['Sedat Gormus']
-    },
-    {
-        id: 3,
-        email: 'dogukanatalay46@gmail.com',
-        password: '1234',
-        name: 'dgosu',
-        description: 'Sr. Backend dev. at Teknasyon, author in Udemy',
-        image: 'https://media-exp1.licdn.com/dms/image/D4D03AQHwjZudYwrfjw/profile-displayphoto-shrink_800_800/0/1665486077397?e=1675296000&v=beta&t=4M3CiuO43MgEXRUQ_CXq-axqz3sPUTnsvgqvuEommI8',
-        ContactInfo: {
-            id: 0,
-            email: 'dogukanatalay46@gmail.com',
-            phone: '0538 427 2743',
-            address: 'Trabzon kanuni kampüsü, kanuni yurdu'
-        },
-        school: 'KTU',
-        city: 'Trabzon',
-        technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['guzin ulutas']
+        lecturersThatApproved: null
     }
 ]
 

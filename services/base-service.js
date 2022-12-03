@@ -1,7 +1,9 @@
-getAll = async (model) => {
-  const dbQuery = ''
+const sequelize = require('../scripts/helpers/sequelize.helper')
 
-  return dbQuery;
+getAll = async (model) => {
+  const dbQueryResult = await sequelize.query('SELECT * FROM users')
+
+  return dbQueryResult;
 };
 
 getOneById = async (model, id) => {
