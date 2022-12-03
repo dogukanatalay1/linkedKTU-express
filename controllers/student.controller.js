@@ -112,7 +112,7 @@ getStudent = (req, res) => {
     const student = students.find((student) => id == student.id)
 
     if (!student) {
-      const error = new ApiError(`There is no student with this id: ${id}`, httpStatus.NOT_FOUND, res)
+      const error = new ApiError(`There is no student with this id: ${id}`, httpStatus.BAD_REQUEST, res)
       // LEARN ABOUT THROWING ERROR AND RETURN NEW APIERROR DIFFERENCE
       throw Error(error)
     }
