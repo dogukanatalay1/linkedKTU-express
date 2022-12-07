@@ -136,7 +136,7 @@ const students = [
 ];
 
 getStudents = (req, res) => {
-  res.status(200).json(students);
+  new ApiDataSuccess('Students fetched succesfully', httpStatus.OK, res, students)
 };
 
 getStudent = (req, res) => {
@@ -152,7 +152,7 @@ getStudent = (req, res) => {
   new ApiDataSuccess('Student with given id found', httpStatus.OK, res, student);
 };
 
-function searchStudentsBySkill(students, skill) {
+searchStudentsBySkill = (students, skill) => {
   const lowerCaseSkill = skill.toLowerCase();
 
   return students.filter(student => {
@@ -165,8 +165,6 @@ getStudentsBySkill = (req, res) => {
   const { skill } = req.params
 
   let studentsWithGivenSkill = searchStudentsBySkill(students, skill)
-
-  console.log(studentsWithGivenSkill)
 
   if(!studentsWithGivenSkill.length) {
     const error = new ApiError(`There is no student with given skill ${skill}`, httpStatus.BAD_REQUEST, res);
