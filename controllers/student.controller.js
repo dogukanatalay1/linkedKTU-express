@@ -51,8 +51,8 @@ const students = [
   {
     id: 0,
     email: 'dogukanatalay46@gmail.com',
-    name: 'dgosu',
-    description: 'Sr. Backend dev. at Teknasyon, author in Udemy',
+    name: 'Doğukan Atalay',
+    description: 'Vue and Nodejs developer',
     image: 'https://media-exp1.licdn.com/dms/image/D4D03AQHwjZudYwrfjw/profile-displayphoto-shrink_800_800/0/1665486077397?e=1675296000&v=beta&t=4M3CiuO43MgEXRUQ_CXq-axqz3sPUTnsvgqvuEommI8',
     ContactInfo: {
       id: 0,
@@ -62,14 +62,14 @@ const students = [
     },
     school: 'KTU',
     city: 'Trabzon',
-    technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB'],
+    technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB', 'MySQL'],
     lecturersThatApproved: null,
   },
   {
     id: 1,
     email: 'ertbil@gmail.com',
-    name: 'ertbil',
-    description: 'Sr. Flutter dev. and Algoritm expert at DeutchCode',
+    name: 'Ertuğrul Bilgiç',
+    description: 'Flutter dev and GDSC Lead',
     image: 'https://media-exp1.licdn.com/dms/image/C4E03AQGOBhpgEqEAsg/profile-displayphoto-shrink_800_800/0/1634920916672?e=1675296000&v=beta&t=vkJa3d8aSRbdIOmZmI8tTAf8tyhEkgEIqeMP0NYdU6I',
     ContactInfo: {
       id: 1,
@@ -79,14 +79,14 @@ const students = [
     },
     school: 'KTU',
     city: 'Trabzon',
-    technologies: ['flutter', 'dart', 'Java', 'leetcode'],
+    technologies: ['Flutter', 'Dart', 'Java', 'MySQL'],
     lecturersThatApproved: null,
   },
   {
     id: 2,
     email: 'yavuz@gmail.com',
-    name: 'yavuz',
-    description: 'Sr. Embedded System engineer at Siemens',
+    name: 'Yavuz Haliloğlu',
+    description: 'Embedded System engineer and Frontend Dev.',
     image: 'https://media-exp1.licdn.com/dms/image/C5603AQF63OAAfUcrcw/profile-displayphoto-shrink_800_800/0/1648034235334?e=1675296000&v=beta&t=wwGIbsiCRdTwi3Bh7fU87Im9Cy7CIvF4yrfit_QR53U',
     ContactInfo: {
       id: 2,
@@ -96,9 +96,43 @@ const students = [
     },
     school: 'KTU',
     city: 'Trabzon',
-    technologies: ['C', 'C++', 'FPGA'],
+    technologies: ['C', 'C++', 'FPGA', 'Vue.js'],
     lecturersThatApproved: null,
   },
+  {
+    id: 3,
+    email: 'mert@gmail.com',
+    name: 'Mert Kaya',
+    description: 'Django and Nodejs developer',
+    image: 'https://media-exp1.licdn.com/dms/image/C4D03AQGsIwvmP2OFsw/profile-displayphoto-shrink_800_800/0/1661778603167?e=1675900800&v=beta&t=F5MuE_dJryG67vau04EvY2SeSsk9o_2J_wqIxt-L5xY',
+    ContactInfo: {
+      id: 3,
+      email: 'mert@gmail.com',
+      phone: '0538 427 2743',
+      address: 'Trabzon kanuni kampüsü, kanuni yurdu',
+    },
+    school: 'KTU',
+    city: 'Trabzon',
+    technologies: ['Django', 'Python', 'Node.js'],
+    lecturersThatApproved: null,
+  },
+  {
+    id: 4,
+    email: 'musti@gmail.com',
+    name: 'Mustafa Yılmaz',
+    description: 'Web scraping and automationg and Node.js',
+    image: 'https://media-exp1.licdn.com/dms/image/C4D03AQGx5GQab_0fmw/profile-displayphoto-shrink_800_800/0/1659616405596?e=1675900800&v=beta&t=ol8uGrig0GoVVKn5WDpMdrzfIxb_IMTVuq0abTXAfY4',
+    ContactInfo: {
+      id: 4,
+      email: 'musti@gmail.com',
+      phone: '0538 427 2743',
+      address: 'Trabzon kanuni kampüsü, kanuni yurdu',
+    },
+    school: 'KTU',
+    city: 'Trabzon',
+    technologies: ['Django', 'Python', 'Node.js'],
+    lecturersThatApproved: null,
+  }
 ];
 
 getStudents = (req, res) => {
@@ -131,6 +165,8 @@ getStudentsBySkill = (req, res) => {
   const { skill } = req.params
 
   let studentsWithGivenSkill = searchStudentsBySkill(students, skill)
+
+  console.log(studentsWithGivenSkill)
 
   if(!studentsWithGivenSkill.length) {
     const error = new ApiError(`There is no student with given skill ${skill}`, httpStatus.BAD_REQUEST, res);
