@@ -157,7 +157,7 @@ function searchStudentsBySkill(students, skill) {
 
   return students.filter(student => {
     return student.technologies
-      .some(technology => technology.toLowerCase() === lowerCaseSkill);
+      .some(technology => technology.toLowerCase().includes(lowerCaseSkill));
   });
 }
 
