@@ -9,10 +9,10 @@ const createLoginToken = (user, res) => {
       email: user.email,
       type: user.type,
     },
-    process.env.TOKEN_SECRET,
+    process.env.JWT_ACCESS_SECRET,
     {
       expiresIn: '24h',
-    }
+    },
   );
   res.header('token', token);
 

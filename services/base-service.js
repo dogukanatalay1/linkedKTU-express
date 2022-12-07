@@ -1,57 +1,57 @@
-const sequelize = require('../scripts/helpers/sequelize.helper')
+const sequelize = require('../scripts/helpers/sequelize.helper');
 
 getAll = async (model) => {
-  const dbQueryResult = await sequelize.query('SELECT * FROM users')
+  const dbQueryResult = await sequelize.query(`SELECT * FROM ${model.name}`);
 
   return dbQueryResult;
 };
 
 getOneById = async (model, id) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 getOneByQuery = async (model, query) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 getByQuery = async (model, query) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 create = async (model, data) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 updateById = async (model, id, data) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 updateByQuery = async (model, query, data) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 deleteById = async (model, id) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 deleteByQuery = async (model, query) => {
-  const dbQuery = ''
+  const dbQueryResult = '';
 
-  return dbQuery;
+  return dbQueryResult;
 };
 
 module.exports = {

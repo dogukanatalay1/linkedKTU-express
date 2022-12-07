@@ -1,5 +1,4 @@
 const httpStatus = require('http-status');
-const { func } = require('joi');
 const ApiError = require('../scripts/responses/error/api-error');
 
 const bodyValidator = (schema) => (req, res, next) => {
@@ -16,16 +15,16 @@ const bodyValidator = (schema) => (req, res, next) => {
     throw Error(error);
   }
 
-  // const { error } = schema.validate(req.body, options);
+  const { error } = schema.validate(req.body, options);
   // ????? validate?
 
-  // if (error) {
-  //   const errorMessage = error.details
-  //     .map((detail) => detail.message)
-  //     .join(', ');
-  //   const error = new ApiError(errorMessage, httpStatus.BAD_REQUEST, res);
-  //   throw Error(error);
-  // }
+  if (error) {
+    const errorMessage = error.details
+      .map((detail) => detail.message)
+      .join(', ');
+    const error = new ApiError(errorMessage, httpStatus.BAD_REQUEST, res);
+    throw Error(error);
+  }
 
   next();
 };
