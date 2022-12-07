@@ -3,15 +3,15 @@ class ApiError extends Error {
     super(message);
     this.statusCode = statusCode;
 
-    ApiError.toJson(res, statusCode, message)
+    ApiError.toJson(message, statusCode, res);
   }
 
-  static toJson(res, statusCode, message) {
-      res.status(statusCode).json({
+  static toJson(message, statusCode, res) {
+    res.status(statusCode).json({
       message: message || 'Something went wrong',
       success: false,
-      statusCode: statusCode
-    })
+      statusCode,
+    });
   }
 }
 
