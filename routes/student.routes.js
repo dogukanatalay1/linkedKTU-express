@@ -14,8 +14,7 @@ router
   .get(studentController.getStudent);
 
 router
-  .route('/login')
-  // .post(studentController.login);
+  .route('/auth/login')
   .post(bodyValidator(schema.loginValidation), studentController.login);
 
 router

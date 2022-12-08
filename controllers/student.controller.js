@@ -23,28 +23,14 @@ const login = async (req, res) => {
     student.password,
   );
 
-  console.log(validPassword);
-
   if (!validPassword) {
     const error = new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
     throw Error(error);
   }
 
-  const token = createLoginToken(student, res);
+  const access_token = createLoginToken(student, res);
 
-  // new ApiDataSuccess(
-  //     'Login Successful',
-  //     { access_token: token },
-  //     true,
-  //     httpStatus.OK,
-  //     res
-  // )
-
-  res.status(httpStatus.OK).json({
-    message: 'Login Successful',
-    access_token: token,
-    success: true,
-  });
+  new ApiDataSuccess('Login succesfull', httpStatus.OK, res, access_token)
 };
 
 const students = [

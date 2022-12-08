@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const loaders = require('./loaders')
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 loaders()
 
 const app = express();
 app.use(express.json());
+
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 
 app.use(cors({ origin: '*', },));
 
@@ -23,7 +27,7 @@ app.get('/', (req, res) => {
   res.send('welcome');
 });
 
-app.use('/students', routes.student);
+app.use('/students' , routes.student);
 app.use('/lecturers', routes.lectuter);
 app.use('/employers', routes.employer);
 
