@@ -8,6 +8,7 @@ ENV PORT = 5000
 ENV MYSQL_DATABASE = "linkedktu"
 ENV MYSQL_USERNAME = "dogukanatalay"
 ENV MYSQL_PASSWORD = "EgWNiTf2WRGUHlOtFWnBPm6ivNmLeIG0" 
+ENV MYSQL_HOST = 'localhost'
 
 ENV JWT_ACCESS_SECRET = "32-JnamdnJ_*01DSLmsksjadsdjkıo^#"
 ENV JWT_REFRESH_SECRET = "32-JnamdnJ_*01DSLmsksjaABdjkJH^#"
