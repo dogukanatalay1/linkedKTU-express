@@ -1,0 +1,20 @@
+FROM node:14
+
+WORKDIR /linkedktu
+COPY . . 
+
+ENV PORT = 5000
+
+ENV MYSQL_DATABASE = "linkedktu"
+ENV MYSQL_USERNAME = "dogus"
+ENV MYSQL_PASSWORD = "EgWNiTf2WRGUHlOtFWnBPm6ivNmLeIG0" 
+
+ENV JWT_ACCESS_SECRET = "32-JnamdnJ_*01DSLmsksjadsdjkıo^#"
+ENV JWT_REFRESH_SECRET = "32-JnamdnJ_*01DSLmsksjaABdjkJH^#"
+ENV JWT_ACCESS_EXP = 90
+ENV JWT_JWT_REFRESH_EXP = 90
+
+RUN npm install
+CMD npm start
+
+EXPOSE 5000
