@@ -6,7 +6,7 @@ COPY . .
 ENV PORT = 5000
 
 ENV MYSQL_DATABASE = "linkedktu"
-ENV MYSQL_USERNAME = "dogus"
+ENV MYSQL_USERNAME = "dogukanatalay"
 ENV MYSQL_PASSWORD = "EgWNiTf2WRGUHlOtFWnBPm6ivNmLeIG0" 
 
 ENV JWT_ACCESS_SECRET = "32-JnamdnJ_*01DSLmsksjadsdjkıo^#"
