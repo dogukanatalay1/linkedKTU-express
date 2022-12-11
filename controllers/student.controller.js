@@ -2,12 +2,11 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
-const { getOneByQuery, updateByQuery } = require('../services/base-service');
+const { getOneByQuery, updateByQuery, getAll } = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const StudentModel = require('../models/student.model');
 
 const login = async (req, res) => {
-  console.log('login req body: ', req.body);
 
   const student = await getOneByQuery(StudentModel, {
     email: req.body.email,
@@ -23,28 +22,14 @@ const login = async (req, res) => {
     student.password,
   );
 
-  console.log(validPassword);
-
   if (!validPassword) {
     const error = new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
     throw Error(error);
   }
 
-  const token = createLoginToken(student, res);
+  const access_token = createLoginToken(student, res);
 
-  // new ApiDataSuccess(
-  //     'Login Successful',
-  //     { access_token: token },
-  //     true,
-  //     httpStatus.OK,
-  //     res
-  // )
-
-  res.status(httpStatus.OK).json({
-    message: 'Login Successful',
-    access_token: token,
-    success: true,
-  });
+  new ApiDataSuccess('Login succesfull', httpStatus.OK, res, access_token)
 };
 
 const students = [
@@ -251,7 +236,7 @@ getStudentsBySkill = (req, res) => {
 
   let studentsWithGivenSkill = searchStudentsBySkill(students, skill)
 
-  if(!studentsWithGivenSkill.length) {
+  if (!studentsWithGivenSkill.length) {
     const error = new ApiError(`There is no student with given skill ${skill}`, httpStatus.BAD_REQUEST, res);
     throw Error(error)
   }
@@ -259,4 +244,14 @@ getStudentsBySkill = (req, res) => {
   new ApiDataSuccess('Students with given skill found', httpStatus.OK, res, studentsWithGivenSkill)
 }
 
-module.exports = { login, getStudents, getStudent, getStudentsBySkill };
+deneme = async (req, res) => {
+  const result = await getAll()
+
+  console.log(result)
+
+  res.status(200).json({
+    result
+  })
+}
+
+module.exports = { login, getStudents, getStudent, getStudentsBySkill, deneme };

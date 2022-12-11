@@ -14,12 +14,15 @@ router
   .get(studentController.getStudent);
 
 router
-  .route('/login')
-  // .post(studentController.login);
+  .route('/auth/login')
   .post(bodyValidator(schema.loginValidation), studentController.login);
 
 router
   .route('/skills/:skill')
   .get(studentController.getStudentsBySkill)
+
+router
+  .route('/sql/deneme')
+  .get(studentController.deneme)
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const { joiPasswordExtendCore } = require('joi-password');
-
 const JoiPassword = Joi.extend(joiPasswordExtendCore);
 
 const loginValidation = Joi.object({
@@ -15,4 +14,4 @@ const loginValidation = Joi.object({
     .required(),
 });
 
-module.exports = loginValidation;
+module.exports = { loginValidation }
