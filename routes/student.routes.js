@@ -21,4 +21,8 @@ router
   .route('/skills/:skill')
   .get(studentController.getStudentsBySkill)
 
+router
+  .route('/sql/deneme')
+  .get(studentController.deneme)
+
 module.exports = router;

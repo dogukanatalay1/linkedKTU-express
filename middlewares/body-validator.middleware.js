@@ -16,7 +16,6 @@ const bodyValidator = (schema) => (req, res, next) => {
   }
 
   const { error } = schema.validate(req.body, options);
-  // ????? validate?
 
   if (error) {
     const errorMessage = error.details
