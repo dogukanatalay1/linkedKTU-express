@@ -18,11 +18,7 @@ router
   .post(bodyValidator(schema.loginValidation), studentController.login);
 
 router
-  .route('/skills/:skill')
-  .get(studentController.getStudentsBySkill)
-
-router
-  .route('/sql/deneme')
-  .get(studentController.deneme)
+  .route('/technologies/:technology')
+  .get(studentController.getStudentsByTechnology);
 
 module.exports = router;

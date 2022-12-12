@@ -1,47 +1,49 @@
+const httpStatus = require('http-status');
 const sequelize = require('../scripts/helpers/sequelize.helper');
 const UserModel = require('../models/baseUser');
 const ApiError = require('../scripts/responses/error/api-error');
-const httpStatus = require('http-status');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
 
 const AccountType = {
   lecturer: 'Lecturer',
   student: 'Student',
-  employer: 'Employer'
-}
+  employer: 'Employer',
+};
 
 const createUser = async (req, res) => {
-
   const newUser = {
-    email: req.body.email
-  }
+    email: req.body.email,
+  };
 
-  const isAlreadyExist = await this.getOneByQuery()
+  const isAlreadyExist = await this.getOneByQuery();
 
   if (isAlreadyExist) {
-    new ApiError('This email is already in use', httpStatus.BAD_REQUEST, res)
-    throw Error()
+    new ApiError('This email is already in use', httpStatus.BAD_REQUEST, res);
+    throw Error();
   }
 
-  const createdUser = await this.create(UserModel, newUser)
+  const createdUser = await this.create(UserModel, newUser);
 
   new ApiDataSuccess(
     'User created succesfully',
     httpStatus.OK,
     res,
-    createUser
-  )
-}
-
+    createUser,
+  );
+};
 
 getAll = async (model) => {
-  const dbQueryResult = await sequelize.query(`SELECT * FROM linkedktu.Languages`);
+  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}";`);
 
   return dbQueryResult;
 };
 
+getAllByQuery = async (model, query) => {
+  const dbQueryResult = await sequelize.query(``)
+};
+
 getOneById = async (model, id) => {
-  const dbQueryResult = '';
+  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
 
   return dbQueryResult;
 };
@@ -98,4 +100,5 @@ module.exports = {
   updateByQuery,
   deleteById,
   deleteByQuery,
+  getAllByQuery
 };

@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
 
-const BaseUserModel = sequelize.define(
-  'BaseUserModel',
+const BaseUser = sequelize.define(
+  'BaseUser',
   {
     _id: {
       type: DataTypes.STRING,
@@ -16,11 +16,21 @@ const BaseUserModel = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    address: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -35,4 +45,4 @@ const BaseUserModel = sequelize.define(
   },
 );
 
-module.exports = BaseUserModel;
+module.exports = BaseUser;
