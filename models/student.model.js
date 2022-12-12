@@ -1,38 +1,61 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
+const BaseUser = require('./baseUser');
+const Post = require('./post.model');
+const JobPost = require('./job-post.model');
+const Lecturer = require('./lecturer.model');
 
-const StudentModel = sequelize.define(
-  'StudentModel',
+const Student = sequelize.define(
+  'Student',
   {
-    _id: {
+    school: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    city: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING,
+    technologies: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    languages: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    experience: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      references: {
+        model: Post,
+        key: 'id',
+      },
     },
-    accountType: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    appliedJobs: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      references: {
+        model: JobPost,
+        key: 'id',
+      },
+    },
+    lecturersThatApproved: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      references: {
+        model: Lecturer,
+        key: 'id',
+      },
     },
   },
   {
     charset: 'utf8',
     collate: 'utf8_unicode_ci',
+    freezeTableName: true
+  },
+  {
+    parent: BaseUser,
+    hasMany: Post,
+    hasMany: JobPost,
+    hasMany: Lecturer,
   },
 );
 
-module.exports = StudentModel;
+module.exports = Student;

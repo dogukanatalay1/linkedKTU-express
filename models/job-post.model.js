@@ -1,12 +1,21 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
-const BaseUser = require('./baseUser');
 const Student = require('./student.model');
+const Post = require('./post.model');
 
-const Lecturer = sequelize.define(
-  'Lecturer',
+const JobPost = sequelize.define(
+  'JobPost',
   {
-    approvedStudents: {
+    isRemote: {
+      type: DataTypes.BOOLEAN,
+    },
+    salary: {
+      type: DataTypes.STRING,
+    },
+    isAccepted: {
+      type: DataTypes.BOOLEAN,
+    },
+    applicants: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       references: {
         model: Student,
@@ -20,8 +29,8 @@ const Lecturer = sequelize.define(
   },
   {
     hasMany: Student,
-    parent: BaseUser,
+    parent: Post,
   },
 );
 
-module.exports = Lecturer;
+module.exports = JobPost;
