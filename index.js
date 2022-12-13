@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 const loaders = require('./loaders')
+const errorHandler = require('./middlewares/error-handler.middleware')
 require('dotenv').config();
 
 loaders()
@@ -17,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const port = process.env.PORT;
+const PORT = process.env.PORT || 8070;
 
 app.get('/', (req, res) => {
   res.send('welcome');
@@ -27,6 +28,8 @@ app.use('/students', routes.student);
 app.use('/lecturers', routes.lectuter);
 app.use('/employers', routes.employer);
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });

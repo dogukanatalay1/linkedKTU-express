@@ -11,14 +11,19 @@ router
 
 router
   .route('/:id')
-  .get(studentController.getStudent);
+  .get(studentController.getStudentById);
 
 router
   .route('/auth/login')
   .post(bodyValidator(schema.loginValidation), studentController.login);
 
 router
+  .route('/auth/register')
+  .post(studentController.createStudent)
+
+router
   .route('/technologies/:technology')
   .get(studentController.getStudentsByTechnology);
+
 
 module.exports = router;
