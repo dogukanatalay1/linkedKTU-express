@@ -10,28 +10,6 @@ const AccountType = {
   employer: 'Employer',
 };
 
-const createUser = async (req, res) => {
-  const newUser = {
-    email: req.body.email,
-  };
-
-  const isAlreadyExist = await this.getOneByQuery();
-
-  if (isAlreadyExist) {
-    new ApiError('This email is already in use', httpStatus.BAD_REQUEST, res);
-    throw Error();
-  }
-
-  const createdUser = await this.create(UserModel, newUser);
-
-  new ApiDataSuccess(
-    'User created succesfully',
-    httpStatus.OK,
-    res,
-    createUser,
-  );
-};
-
 getAll = async (model) => {
   const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}";`);
 
@@ -48,8 +26,8 @@ getOneById = async (model, id) => {
   return dbQueryResult;
 };
 
-getOneByQuery = async (model, query) => {
-  const dbQueryResult = '';
+getOneByQuery = async (model, key, query) => {
+  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`)
 
   return dbQueryResult;
 };
@@ -60,8 +38,9 @@ getByQuery = async (model, query) => {
   return dbQueryResult;
 };
 
+// TODO
 create = async (model, data) => {
-  const dbQueryResult = '';
+  const dbQueryResult = ``;
 
   return dbQueryResult;
 };

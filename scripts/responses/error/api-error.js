@@ -1,17 +1,17 @@
 class ApiError extends Error {
-  constructor(message, statusCode, res) {
+  constructor(message, statusCode) {
     super(message);
     this.statusCode = statusCode;
-
-    ApiError.toJson(message, statusCode, res);
   }
 
-  static toJson(message, statusCode, res) {
-    res.status(statusCode).json({
-      message: message || 'Something went wrong',
+  toJSON() {
+    return {
+      error: {
+        message: this.message || 'Something went wrong',
+      },
       success: false,
-      statusCode,
-    });
+      statusCode: this.statusCode,
+    };
   }
 }
 
