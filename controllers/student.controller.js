@@ -2,14 +2,12 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
-const {
-  getOneByQuery, updateByQuery, getAll, getOneById, getAllByQuery
-} = require('../services/base-service');
+const { getOneByQuery, updateByQuery, getAll, getOneById, getAllByQuery} = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const Student = require('../models/student.model');
 
 const login = async (req, res) => {
-  const student = await getOneByQuery(StudentModel, {
+  const student = await getOneByQuery(Student.name, {
     email: req.body.email,
   });
 
@@ -33,10 +31,13 @@ const login = async (req, res) => {
   new ApiDataSuccess('Login succesfull', httpStatus.OK, res, access_token);
 };
 
-
 getStudents = async (req, res) => {
  
   let result = await getAll(Student.name)
+
+  if(!result) {
+    new ApiError('There have been an error', httpStatus.BAD_REQUEST, res)
+  }
 
   new ApiDataSuccess('Students fetched succesfully', httpStatus.OK, res, result[0]);
 };
