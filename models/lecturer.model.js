@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
-const BaseUser = require('./baseUser');
+const BaseUser = require('./base-user.model');
 const Student = require('./student.model');
 
 const Lecturer = sequelize.define(
