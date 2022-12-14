@@ -2,7 +2,9 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
-const { getOneByQuery, updateByQuery, getAll, getOneById, getAllByQuery, create } = require('../services/base-service');
+const {
+  getOneByQuery, updateByQuery, getAll, getOneById, getAllByQuery, create,
+} = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const Student = require('../models/student.model');
 const passwordHelper = require('../scripts/helpers/password.helper');
@@ -14,9 +16,9 @@ const login = async (req, res, next) => {
   });
 
   if (student <= 0) {
-    return next( 
-      new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST)
-    )
+    return next(
+      new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
+    );
   }
 
   const validPassword = await bcrypt.compare(
@@ -26,8 +28,8 @@ const login = async (req, res, next) => {
 
   if (!validPassword) {
     return new next(
-      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST)
-    )
+      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
+    );
   }
 
   const access_token = createLoginToken(student, res);
@@ -37,18 +39,18 @@ const login = async (req, res, next) => {
 
 const createStudent = async (req, res, next) => {
   const {
-    id, email, password, fullname, description, image, phone, address, school, city, contactmail
-  } = req.body
+    id, email, password, fullname, description, image, phone, address, school, city, contactmail,
+  } = req.body;
 
-  const student = await getOneByQuery(Student.name, 'Email', email)
+  const student = await getOneByQuery(Student.name, 'Email', email);
 
   if (Object.keys(student).length !== 0) {
-    return next (
-      new ApiError('This email already in use!', httpStatus.BAD_REQUEST)
-    )
+    return next(
+      new ApiError('This email already in use!', httpStatus.BAD_REQUEST),
+    );
   }
 
-  const passwordToHash = await passwordHelper.passwordToHash(password)
+  const passwordToHash = await passwordHelper.passwordToHash(password);
 
   const studentPassword = passwordToHash.hashedPassword;
 
@@ -63,19 +65,19 @@ const createStudent = async (req, res, next) => {
     Address: address,
     School: school,
     City: city,
-    ContactMail: contactmail
-  }
+    ContactMail: contactmail,
+  };
 
-  //todo
-  const createdStudent = await create(Student.name, studentData)
+  // todo
+  const createdStudent = await create(Student.name, studentData);
 
   eventEmitter.emit('send_email', {
     to: email,
     subject: 'linkedKTU verification',
     template: 'student-password-template',
     context: {
-        fullName: fullname,
-        password: studentPassword,
+      fullName: fullname,
+      password: studentPassword,
     },
   });
 
@@ -83,46 +85,61 @@ const createStudent = async (req, res, next) => {
 };
 
 getStudents = async (req, res, next) => {
+  try {
+    const result = await getAll(Student.name);
 
-  let result = await getAll(Student.name)
-
-  if (result[0].length == 0) {
-    return next (
-      new ApiError('There have been an error', httpStatus.BAD_REQUEST)
-    )
+    if (result[0].length == 0) {
+      return next(
+        new ApiError('There have been an error', httpStatus.BAD_REQUEST),
+      );
+    }
+    ApiDataSuccess.send('Students fetched succesfully', httpStatus.OK, res, result[0]);
+  } catch (error) {
+    return next(
+      new ApiError(error.message, httpStatus.NOT_FOUND),
+    );
   }
-
-  ApiDataSuccess.send('Students fetched succesfully', httpStatus.OK, res, result[0]);
 };
 
 getStudentById = async (req, res, next) => {
   const { id } = req.params;
 
-  const student = await getOneById(Student.name, id)
+  try {
+    const student = await getOneById(Student.name, id, next);
 
-  if (student[0].length == 0) {
-    return next (
-      new ApiError(`There is no student with this id: ${id}`, httpStatus.BAD_REQUEST)
-    )
+    if (student[0].length === 0) {
+      return next(
+        new ApiError(`There is no student with this id: ${id}`, httpStatus.BAD_REQUEST),
+      );
+    }
+    ApiDataSuccess.send('Student with given id found', httpStatus.OK, res, student[0]);
+  } catch (error) {
+    return next(
+      new ApiError(error.message, httpStatus.NOT_FOUND),
+    );
   }
-
-  ApiDataSuccess.send('Student with given id found', httpStatus.OK, res, student[0]);
 };
 
 getStudentsByTechnology = async (req, res) => {
   const { tech } = req.params;
 
-  const studentsWithGivenTech = await getAllByQuery(Student.name, tech)
+  try {
+    const studentsWithGivenTech = await getAllByQuery(Student.name, tech);
 
-  if (!studentsWithGivenTech.length) {
+    if (!studentsWithGivenTech.length) {
+      return next(
+        new ApiError(`There is no student with given skill ${skill}`, httpStatus.BAD_REQUEST),
+      );
+    }
+
+    ApiDataSuccess.send('Students with given skill found', httpStatus.OK, res, studentsWithGivenTech);
+  } catch (error) {
     return next(
-      new ApiError(`There is no student with given skill ${skill}`, httpStatus.BAD_REQUEST)
-    )
+      new ApiError(error.message, httpStatus.NOT_FOUND),
+    );
   }
-
-  ApiDataSuccess.send('Students with given skill found', httpStatus.OK, res, studentsWithGivenTech);
 };
 
 module.exports = {
-  login, getStudents, getStudentById, getStudentsByTechnology, createStudent
+  login, getStudents, getStudentById, getStudentsByTechnology, createStudent,
 };

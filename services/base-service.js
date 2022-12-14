@@ -10,64 +10,26 @@ const AccountType = {
   employer: 'Employer',
 };
 
-getAll = async (model) => {
-  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}";`);
+getAll = async (model) => await sequelize.query(`SELECT * FROM "${model}";`);
 
-  return dbQueryResult;
-};
+getAllByQuery = async (model, query) => await sequelize.query('');
 
-getAllByQuery = async (model, query) => {
-  const dbQueryResult = await sequelize.query(``)
-};
+getOneById = async (model, id, next) => await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
 
-getOneById = async (model, id) => {
-  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
+getOneByQuery = async (model, key, query) => await sequelize.query(`SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`);
 
-  return dbQueryResult;
-};
-
-getOneByQuery = async (model, key, query) => {
-  const dbQueryResult = await sequelize.query(`SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`)
-
-  return dbQueryResult;
-};
-
-getByQuery = async (model, query) => {
-  const dbQueryResult = '';
-
-  return dbQueryResult;
-};
+getByQuery = async (model, query) => '';
 
 // TODO
-create = async (model, data) => {
-  const dbQueryResult = ``;
+create = async (model, data) => '';
 
-  return dbQueryResult;
-};
+updateById = async (model, id, data) => '';
 
-updateById = async (model, id, data) => {
-  const dbQueryResult = '';
+updateByQuery = async (model, query, data) => '';
 
-  return dbQueryResult;
-};
+deleteById = async (model, id) => '';
 
-updateByQuery = async (model, query, data) => {
-  const dbQueryResult = '';
-
-  return dbQueryResult;
-};
-
-deleteById = async (model, id) => {
-  const dbQueryResult = '';
-
-  return dbQueryResult;
-};
-
-deleteByQuery = async (model, query) => {
-  const dbQueryResult = '';
-
-  return dbQueryResult;
-};
+deleteByQuery = async (model, query) => '';
 
 module.exports = {
   getAll,
@@ -79,5 +41,5 @@ module.exports = {
   updateByQuery,
   deleteById,
   deleteByQuery,
-  getAllByQuery
+  getAllByQuery,
 };

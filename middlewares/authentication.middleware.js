@@ -6,14 +6,16 @@ module.exports = async function (req, res, next) {
   const token = req.headers?.authorization?.split(' ')[1];
 
   if (!token) {
-    const error = new ApiError('Access Denied', httpStatus.UNAUTHORIZED, res);
-    throw Error(error);
+    return next(
+      new ApiError('Access Denied', httpStatus.UNAUTHORIZED)
+    ) 
   }
 
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
     if (err) {
-      const error = new ApiError('Invalid access token', httpStatus.BAD_REQUEST, res);
-      throw Error(error);
+      return next(
+        new ApiError('Invalid access token', httpStatus.BAD_REQUEST)
+      )
     }
 
     req.user = decoded;
