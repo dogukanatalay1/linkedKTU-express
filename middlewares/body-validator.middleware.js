@@ -11,8 +11,9 @@ const bodyValidator = (schema) => (req, res, next) => {
     Object.keys(req.body || {}).length === 0
     && Object.keys(req.files || {}).length === 0
   ) {
-    const apierror = new ApiError('Request body must not be empty', httpStatus.BAD_REQUEST, res);
-    throw Error(apierror);
+      return next(
+        new ApiError('Request body must not be empty', httpStatus.BAD_REQUEST)
+      )
   }
 
   const { error } = schema.validate(req.body, options);
@@ -21,8 +22,10 @@ const bodyValidator = (schema) => (req, res, next) => {
     const errorMessage = error.details
       .map((detail) => detail.message)
       .join(', ');
-    const apierror = new ApiError(errorMessage, httpStatus.BAD_REQUEST, res);
-    throw Error(apierror);
+      
+    return next(
+      new ApiError(errorMessage, httpStatus.BAD_REQUEST)
+    )
   }
 
   next();
