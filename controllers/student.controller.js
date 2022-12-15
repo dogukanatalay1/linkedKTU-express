@@ -27,14 +27,14 @@ const login = async (req, res, next) => {
   );
 
   if (!validPassword) {
-    return new next(
-      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
+    return next(
+      new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
     );
   }
 
   const access_token = createLoginToken(student, res);
 
-  new ApiDataSuccess('Login succesfull', httpStatus.OK, res, access_token);
+  ApiDataSuccess.send('Login succesfull', httpStatus.OK, res, access_token)
 };
 
 const createStudent = async (req, res, next) => {
@@ -55,6 +55,7 @@ const createStudent = async (req, res, next) => {
       new ApiError(error.message, httpStatus.NOT_FOUND)
     )
   }
+  
   const studentPassword = (await passwordHelper.passwordToHash(password)).hashedPassword;
 
   const studentData = {
@@ -91,7 +92,7 @@ getStudents = async (req, res, next) => {
   try {
     const result = await getAll(Student.name);
 
-    if (result[0].length === 0) {
+    if (!result[0].length === 0) {
       return next(
         new ApiError('There have been an error', httpStatus.BAD_REQUEST),
       );

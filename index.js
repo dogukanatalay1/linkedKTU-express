@@ -1,16 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
-const loaders = require('./loaders')
-const errorHandler = require('./middlewares/error-handler.middleware')
+const loaders = require('./loaders');
+const errorHandler = require('./middlewares/error-handler.middleware');
 require('dotenv').config();
 
-loaders()
+loaders();
 
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: '*', },));
+app.use(cors({ origin: '*' }));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/students', routes.student);
 app.use('/lecturers', routes.lectuter);
 app.use('/employers', routes.employer);
+app.use('/posts', routes.post);
 
 app.use(errorHandler);
 
