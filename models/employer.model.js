@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
 const JobPost = require('./job-post.model');
-const BaseUser = require('./baseUser');
+const BaseUser = require('./base-user.model');
 
 const Employer = sequelize.define(
   'Employer',

@@ -1,17 +1,13 @@
 const express = require('express');
-
+const employerController = require('../controllers/employer.controller')
 const router = express.Router();
-const httpStatus = require('http-status');
-const employerControllers = require('../controllers/employer.controller');
-const ApiError = require('../scripts/responses/error/api-error');
-const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
 
-router.get('/', (req, res) => {
-  res.status(200).json(
-    {
-      employerName: 'Emre Efendioğlu',
-    },
-  );
-});
+router
+  .route('/')
+  .get(employerController.getEmployers)
+
+router
+  .route('/:id')
+  .get(employerController.getEmployerById)
 
 module.exports = router;

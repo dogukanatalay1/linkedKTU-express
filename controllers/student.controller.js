@@ -27,14 +27,14 @@ const login = async (req, res, next) => {
   );
 
   if (!validPassword) {
-    return new next(
-      ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
+    return next(
+      new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST),
     );
   }
 
   const access_token = createLoginToken(student, res);
 
-  new ApiDataSuccess('Login succesfull', httpStatus.OK, res, access_token);
+  ApiDataSuccess.send('Login succesfull', httpStatus.OK, res, access_token)
 };
 
 const createStudent = async (req, res, next) => {
@@ -42,17 +42,21 @@ const createStudent = async (req, res, next) => {
     id, email, password, fullname, description, image, phone, address, school, city, contactmail,
   } = req.body;
 
-  const student = await getOneByQuery(Student.name, 'Email', email);
+  try {
+    const student = await getOneByQuery(Student.name, 'Email', email);
 
-  if (Object.keys(student).length !== 0) {
+    if (!student[0].length === 0) {
+      return next(
+        new ApiError('This email already in use!', httpStatus.BAD_REQUEST),
+      );
+    }
+  } catch (error) {
     return next(
-      new ApiError('This email already in use!', httpStatus.BAD_REQUEST),
-    );
+      new ApiError(error.message, httpStatus.NOT_FOUND)
+    )
   }
-
-  const passwordToHash = await passwordHelper.passwordToHash(password);
-
-  const studentPassword = passwordToHash.hashedPassword;
+  
+  const studentPassword = (await passwordHelper.passwordToHash(password)).hashedPassword;
 
   const studentData = {
     ID: id,
@@ -88,7 +92,7 @@ getStudents = async (req, res, next) => {
   try {
     const result = await getAll(Student.name);
 
-    if (result[0].length == 0) {
+    if (!result[0].length === 0) {
       return next(
         new ApiError('There have been an error', httpStatus.BAD_REQUEST),
       );
