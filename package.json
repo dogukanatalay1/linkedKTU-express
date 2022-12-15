@@ -11,7 +11,9 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "lint": "eslint ./**/*.js",
+    "lint-fix": "eslint ./**/*.js --fix"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +32,8 @@
     "joi-password": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.8.0",
+    "nodemailer-express-handlebars": "^6.0.0",
     "pg": "^8.8.0",
     "sequelize": "^6.26.0"
   },
