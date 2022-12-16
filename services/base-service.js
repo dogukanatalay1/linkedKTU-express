@@ -9,7 +9,7 @@ const sequelize = require('../scripts/helpers/sequelize.helper');
 const getAll = async (model) =>
     await sequelize.query(`SELECT * FROM "${model}";`);
 
-const getAllByQuery = async (model,key, query) =>
+const getAllByQuery = async (model, key, query) =>
     await sequelize.query(`SELECT "s".*
     FROM "${model}_${key}" as "st"
     INNER JOIN "${model}" as "s"
@@ -26,7 +26,6 @@ const getOneByQuery = async (model, key, query) =>
         `SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`
     );
 
-
 const create = async (model, data) =>
     await sequelize.query(`INSERT INTO public."${model}"(
         "ID",
@@ -41,20 +40,18 @@ const create = async (model, data) =>
         "IsWorkRemote",
         "City"
         ) VALUES(
-            ${data.ID},
-            ${data.Email},
-            ${data.Password},
-            ${data.Fullname},
-            ${data.Description},
+            '${data.ID}',
+            '${data.Email}',
+            '${data.Password}',
+            '${data.Fullname}',
+            '${data.Description}',
             ${data.Image},
-            ${data.Phone},
-            ${data.Address},
-            ${data.IsInternShipRemote},
+            '${data.Phone}',
+            '${data.Address}',
+            ${data.IsInternshipRemote},
             ${data.IsWorkRemote},
-            ${data.City},
+            '${data.City}'
         )`);
-
-
 
 // const updateById = async (model, id, data) => '';
 

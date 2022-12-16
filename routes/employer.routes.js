@@ -10,4 +10,8 @@ router
     .route('/:id')
     .get(employerController.getEmployerById);
 
+router
+    .route('/auth/register')
+    .post(employerController.createEmployer);
+
 module.exports = router;
