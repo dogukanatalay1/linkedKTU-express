@@ -163,16 +163,19 @@ const getStudentById = async (req, res, next) => {
 };
 
 const getStudentsByTechnology = async (req, res, next) => {
-    const { tech } = req.params;
+    const { technology } = req.params;
 
     try {
-        const studentsWithGivenTech =
-        await getAllByQuery(Student.name, 'Technologies' ,tech);
+        const studentsWithGivenTech = await getAllByQuery(
+            Student.name,
+            'Technologies',
+            technology
+        );
 
-        if (!studentsWithGivenTech.length) {
+        if (studentsWithGivenTech[0].length === 0) {
             return next(
                 new ApiError(
-                    `There is no student with given tech ${tech}`,
+                    `There is no student with given tech ${technology}`,
                     httpStatus.BAD_REQUEST
                 )
             );
@@ -182,7 +185,7 @@ const getStudentsByTechnology = async (req, res, next) => {
             'Students with given skill found',
             httpStatus.OK,
             res,
-            studentsWithGivenTech
+            studentsWithGivenTech[0]
         );
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
