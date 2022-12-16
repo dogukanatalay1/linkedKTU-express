@@ -1,45 +1,42 @@
-const httpStatus = require('http-status');
 const sequelize = require('../scripts/helpers/sequelize.helper');
-const UserModel = require('../models/base-user.model');
-const ApiError = require('../scripts/responses/error/api-error');
-const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
 
-const AccountType = {
-  lecturer: 'Lecturer',
-  student: 'Student',
-  employer: 'Employer',
-};
+// const AccountType = {
+//   lecturer: 'Lecturer',
+//   student: 'Student',
+//   employer: 'Employer',
+// };
 
-getAll = async (model) => await sequelize.query(`SELECT * FROM "${model}";`);
+const getAll = async (model) =>
+    await sequelize.query(`SELECT * FROM "${model}";`);
 
-getAllByQuery = async (model, query) => await sequelize.query('');
+// const getAllByQuery = async (model, query) => await sequelize.query('');
 
-getOneById = async (model, id, next) => await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
+const getOneById = async (model, id) =>
+    await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
 
-getOneByQuery = async (model, key, query) => await sequelize.query(`SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`);
+const getOneByQuery = async (model, key, query) =>
+    await sequelize.query(
+        `SELECT * FROM "${model}" WHERE "${key}"='${query}' LIMIT 1`
+    );
 
-getByQuery = async (model, query) => '';
+// const create = async (model, data) => '';
 
-// TODO
-create = async (model, data) => '';
+// const updateById = async (model, id, data) => '';
 
-updateById = async (model, id, data) => '';
+// const updateByQuery = async (model, query, data) => '';
 
-updateByQuery = async (model, query, data) => '';
+// const deleteById = async (model, id) => '';
 
-deleteById = async (model, id) => '';
-
-deleteByQuery = async (model, query) => '';
+// const deleteByQuery = async (model, query) => '';
 
 module.exports = {
-  getAll,
-  getOneById,
-  getOneByQuery,
-  getByQuery,
-  create,
-  updateById,
-  updateByQuery,
-  deleteById,
-  deleteByQuery,
-  getAllByQuery,
+    getAll,
+    getOneById,
+    getOneByQuery,
+    // create,
+    // updateById,
+    // updateByQuery,
+    // deleteById,
+    // deleteByQuery,
+    // getAllByQuery,
 };
