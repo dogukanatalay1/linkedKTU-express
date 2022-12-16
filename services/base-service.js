@@ -19,7 +19,7 @@ const getAllByQuery = async (model, key, query) =>
     WHERE LOWER("t"."TechName") LIKE LOWER('%${query}%');`);
 
 const getOneById = async (model, id) =>
-    await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
+    await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"='${id}';`);
 
 const getOneByQuery = async (model, key, query) =>
     await sequelize.query(
@@ -65,10 +65,10 @@ module.exports = {
     getAll,
     getOneById,
     getOneByQuery,
+    getAllByQuery,
     create,
     // updateById,
     // updateByQuery,
     // deleteById,
     // deleteByQuery,
-    getAllByQuery,
 };

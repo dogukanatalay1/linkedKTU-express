@@ -37,14 +37,14 @@ const getEmployerById = async (req, res, next) => {
         if (employer[0].length === 0) {
             return next(
                 new ApiError(
-                    `There is no employer with id of ${id}`,
+                    `There are no employers with this id: ${id}`,
                     httpStatus.BAD_REQUEST
                 )
             );
         }
 
         ApiDataSuccess.send(
-            `Employer with id of ${id} fetched!`,
+            `Employer ${id} fetched!`,
             httpStatus.OK,
             res,
             employer[0]
