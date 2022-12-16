@@ -9,7 +9,14 @@ const sequelize = require('../scripts/helpers/sequelize.helper');
 const getAll = async (model) =>
     await sequelize.query(`SELECT * FROM "${model}";`);
 
-// const getAllByQuery = async (model, query) => await sequelize.query('');
+const getAllByQuery = async (model,key, query) =>
+    await sequelize.query(`SELECT "s".*
+    FROM "${model}_${key}" as "st"
+    INNER JOIN "${model}" as "s"
+    ON "st"."${model}_ID" = "s"."ID"
+    INNER JOIN "${key}" as "t"
+    ON "st"."${key}_ID" = "t"."ID"
+    WHERE LOWER("t"."TechName") = LOWER('${query}');`);
 
 const getOneById = async (model, id) =>
     await sequelize.query(`SELECT * FROM "${model}" WHERE "ID"=${id};`);
@@ -38,5 +45,5 @@ module.exports = {
     // updateByQuery,
     // deleteById,
     // deleteByQuery,
-    // getAllByQuery,
+    getAllByQuery,
 };

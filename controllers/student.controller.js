@@ -166,7 +166,8 @@ const getStudentsByTechnology = async (req, res, next) => {
     const { tech } = req.params;
 
     try {
-        const studentsWithGivenTech = await getAllByQuery(Student.name, tech);
+        const studentsWithGivenTech =
+        await getAllByQuery(Student.name, 'Technologies' ,tech);
 
         if (!studentsWithGivenTech.length) {
             return next(
