@@ -49,22 +49,10 @@ const login = async (req, res, next) => {
 };
 
 const createStudent = async (req, res, next) => {
-    const {
-        email,
-        password,
-        fullname,
-        description,
-        image,
-        phone,
-        address,
-        school,
-        city,
-        contactmail,
-    } = req.body;
-
     let student;
+
     try {
-        student = await getOneByQuery(Student.name, 'Email', email);
+        student = await getOneByQuery(Student.name, 'Email', req.body.email);
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
@@ -75,24 +63,22 @@ const createStudent = async (req, res, next) => {
         );
     }
 
-    const studentPassword = (await passwordHelper.passwordToHash(password))
-        .hashedPassword;
-
     const studentData = {
         ID: uuidv4(),
-        Email: email,
-        Password: studentPassword,
-        Fullname: fullname,
-        Description: description,
-        Image: image,
-        Phone: phone,
-        Address: address,
-        School: school,
-        City: city,
-        ContactMail: contactmail,
+        Email: req.body.email,
+        Password: (await passwordHelper.passwordToHash(req.body.password))
+            .hashedPassword,
+        Fullname: req.body.fullname,
+        Description: req.body.description,
+        Image: req.body.image,
+        Phone: req.body.phone,
+        Address: req.body.address,
+        School: req.body.school,
+        City: req.body.city,
+        ContactMail: req.body.contactmail,
     };
 
-    sendEmail(email, fullname, studentPassword);
+    sendEmail(studentData.Email, studentData.Fullname, studentData.Password);
 
     const createdStudent = await create(Student.name, studentData);
 

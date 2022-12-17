@@ -62,29 +62,17 @@ const getJobPostById = async (req, res, next) => {
 };
 
 const createJobPost = async (req, res, next) => {
-    const {
-        title,
-        description,
-        company,
-        role,
-        technologies,
-        isRemote,
-        salary,
-        isAccepted,
-        applicants,
-    } = req.body;
-
     const jobPostData = {
         ID: uuidv4(),
-        Title: title,
-        Description: description,
-        Company: company,
-        Role: role,
-        Technologies: technologies,
-        IsRemote: isRemote,
-        Salary: salary,
-        isAccepted: isAccepted,
-        Applicants: applicants,
+        Title: req.body.title,
+        Description: req.body.description,
+        Company: req.body.company,
+        Role: req.body.role,
+        Technologies: req.body.technologies,
+        IsRemote: req.body.isRemote,
+        Salary: req.body.salary,
+        isAccepted: req.body.isAccepted,
+        Applicants: req.body.applicants,
     };
 
     let jobPost;

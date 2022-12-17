@@ -98,31 +98,18 @@ const getEmployerById = async (req, res, next) => {
 };
 
 const createEmployer = async (req, res, next) => {
-    const {
-        email,
-        password,
-        fullname,
-        description,
-        image,
-        phone,
-        address,
-        isInternshipRemote,
-        isWorkRemote,
-        city,
-    } = req.body;
-
     const employerData = {
         ID: uuidv4(),
-        Email: email,
-        Password: password,
-        Fullname: fullname,
-        Description: description,
-        Image: image,
-        Phone: phone,
-        Address: address,
-        IsInternshipRemote: isInternshipRemote,
-        IsWorkRemote: isWorkRemote,
-        City: city,
+        Email: req.body.email,
+        Password: req.body.password,
+        Fullname: req.body.fullname,
+        Description: req.body.description,
+        Image: req.body.image,
+        Phone: req.body.phone,
+        Address: req.body.address,
+        IsInternshipRemote: req.body.isInternshipRemote,
+        IsWorkRemote: req.body.isWorkRemote,
+        City: req.body.city,
     };
 
     let employer;
@@ -133,7 +120,7 @@ const createEmployer = async (req, res, next) => {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
 
-    sendEmail(email, fullname, password);
+    sendEmail(employerData.Email, employerData.Fullname, employerData.Password);
 
     ApiDataSuccess.send(
         'Employer created succesfully!',
