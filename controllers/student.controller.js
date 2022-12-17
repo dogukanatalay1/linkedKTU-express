@@ -62,25 +62,21 @@ const createStudent = async (req, res, next) => {
         contactmail,
     } = req.body;
 
+    let student;
     try {
-        const student = await getOneByQuery(Student.name, 'Email', email);
-
-        if (!student[0].length === 0) {
-            return next(
-                new ApiError(
-                    'This email already in use!',
-                    httpStatus.BAD_REQUEST
-                )
-            );
-        }
+        student = await getOneByQuery(Student.name, 'Email', email);
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
 
+    if (!student[0].length === 0) {
+        return next(
+            new ApiError('This email already in use!', httpStatus.BAD_REQUEST)
+        );
+    }
+
     const studentPassword = (await passwordHelper.passwordToHash(password))
         .hashedPassword;
-
-    const id = uuidv4();
 
     eventEmitter.emit('send_email', {
         to: email,
@@ -93,7 +89,7 @@ const createStudent = async (req, res, next) => {
     });
 
     const studentData = {
-        ID: id,
+        ID: uuidv4(),
         Email: email,
         Password: studentPassword,
         Fullname: fullname,
@@ -106,7 +102,6 @@ const createStudent = async (req, res, next) => {
         ContactMail: contactmail,
     };
 
-    // todo
     const createdStudent = await create(Student.name, studentData);
 
     ApiDataSuccess.send(
@@ -118,78 +113,84 @@ const createStudent = async (req, res, next) => {
 };
 
 const getStudents = async (req, res, next) => {
-    try {
-        const result = await getAll(Student.name);
+    let result;
 
-        if (!result[0].length === 0) {
-            return next(
-                new ApiError('There have been an error', httpStatus.BAD_REQUEST)
-            );
-        }
-        ApiDataSuccess.send(
-            'Students fetched succesfully',
-            httpStatus.OK,
-            res,
-            result[0]
-        );
+    try {
+        result = await getAll(Student.name);
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
+
+    if (!result[0].length === 0) {
+        return next(
+            new ApiError('There have been an error', httpStatus.BAD_REQUEST)
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Students fetched succesfully',
+        httpStatus.OK,
+        res,
+        result[0]
+    );
 };
 
 const getStudentById = async (req, res, next) => {
     const { id } = req.params;
+    let student;
 
     try {
-        const student = await getOneById(Student.name, id, next);
-
-        if (student[0].length === 0) {
-            return next(
-                new ApiError(
-                    `There is no student with this id: ${id}`,
-                    httpStatus.BAD_REQUEST
-                )
-            );
-        }
-        ApiDataSuccess.send(
-            'Student with given id found',
-            httpStatus.OK,
-            res,
-            student[0]
-        );
+        student = await getOneById(Student.name, id, next);
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
+
+    if (student[0].length === 0) {
+        return next(
+            new ApiError(
+                `There is no student with this id: ${id}`,
+                httpStatus.BAD_REQUEST
+            )
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Student with given id found',
+        httpStatus.OK,
+        res,
+        student[0]
+    );
 };
 
 const getStudentsByTechnology = async (req, res, next) => {
     const { technology } = req.params;
+    let studentsWithGivenTech;
 
     try {
-        const studentsWithGivenTech = await getAllByQuery(
+        studentsWithGivenTech = await getAllByQuery(
             Student.name,
             'Technologies',
             technology
         );
-
-        if (studentsWithGivenTech[0].length === 0) {
-            return next(
-                new ApiError(
-                    `There is no student with given tech ${technology}`,
-                    httpStatus.BAD_REQUEST
-                )
-            );
-        }
-
-        ApiDataSuccess.send(
-            'Students with given skill found',
-            httpStatus.OK,
-            res,
-            studentsWithGivenTech[0]
-        );
     } catch (error) {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
+
+    if (studentsWithGivenTech[0].length === 0) {
+        return next(
+            new ApiError(
+                `There is no student with given tech ${technology}`,
+                httpStatus.BAD_REQUEST
+            )
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Students with given skill found',
+        httpStatus.OK,
+        res,
+        studentsWithGivenTech[0]
+    );
 };
 
 module.exports = {
