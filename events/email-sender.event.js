@@ -4,7 +4,6 @@ const eventEmitter = require('./event-emitter.event');
 
 module.exports = () => {
     eventEmitter.on('send_email', (emailData) => {
-        console.log('email data:', emailData);
         const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
