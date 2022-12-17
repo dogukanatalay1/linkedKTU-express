@@ -1,17 +1,4 @@
 const sequelize = require('../scripts/helpers/sequelize.helper');
-const eventEmitter = require('../events/event-emitter.event');
-
-const sendEmail = (email, fullName, password) => {
-    eventEmitter.emit('send_email', {
-        to: email,
-        subject: 'linkedKTU verification',
-        template: 'student-password-template',
-        context: {
-            fullName: fullName,
-            password: password,
-        },
-    });
-};
 
 //  DB QUERIES BELOW
 const getAll = async (model) =>
@@ -79,5 +66,4 @@ module.exports = {
     // updateByQuery,
     // deleteById,
     // deleteByQuery,
-    sendEmail,
 };

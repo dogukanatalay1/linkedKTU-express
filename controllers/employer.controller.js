@@ -6,11 +6,11 @@ const {
     getOneById,
     create,
     getOneByQuery,
-    sendEmail,
 } = require('../services/base-service');
 const Employer = require('../models/employer.model');
 const { v4: uuidv4 } = require('uuid');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
+const { sendEmail } = require('../scripts/helpers/send-email.helper');
 
 const login = async (req, res, next) => {
     let employer;

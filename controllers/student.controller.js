@@ -8,12 +8,12 @@ const {
     getOneById,
     getAllByQuery,
     create,
-    sendEmail,
 } = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const Student = require('../models/student.model');
 const passwordHelper = require('../scripts/helpers/password.helper');
 const { v4: uuidv4 } = require('uuid');
+const { sendEmail } = require('../scripts/helpers/send-email.helper');
 
 const login = async (req, res, next) => {
     const student = await getOneByQuery(Student.name, {
@@ -63,11 +63,14 @@ const createStudent = async (req, res, next) => {
         );
     }
 
+    const studentPassword = await passwordHelper.passwordToHash(
+        req.body.password
+    );
+
     const studentData = {
         ID: uuidv4(),
         Email: req.body.email,
-        Password: (await passwordHelper.passwordToHash(req.body.password))
-            .hashedPassword,
+        Password: studentPassword.hashedPassword,
         Fullname: req.body.fullname,
         Description: req.body.description,
         Image: req.body.image,
@@ -125,10 +128,7 @@ const getStudentById = async (req, res, next) => {
 
     if (student[0].length === 0) {
         return next(
-            new ApiError(
-                `There is no student with this id: ${id}`,
-                httpStatus.BAD_REQUEST
-            )
+            new ApiError('There have been an error!', httpStatus.NOT_FOUND)
         );
     }
 
