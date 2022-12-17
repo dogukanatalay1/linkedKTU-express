@@ -2,11 +2,62 @@ const httpStatus = require('http-status');
 // const bcrypt = require('bcryptjs');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
 const ApiError = require('../scripts/responses/error/api-error');
-const { getAll, getOneById, create } = require('../services/base-service');
+const {
+    getAll,
+    getOneById,
+    create,
+    getOneByQuery,
+} = require('../services/base-service');
 const Employer = require('../models/employer.model');
 // const JobPost = require('../models/job-post.model');
 const { v4: uuidv4 } = require('uuid');
 const eventEmitter = require('../events/event-emitter.event');
+const { createLoginToken } = require('../scripts/helpers/jwt.helper');
+
+const login = async (req, res, next) => {
+    console.log(req.body);
+
+    try {
+        const employer = await getOneByQuery(
+            Employer.name,
+            'Email',
+            req.body.email
+        );
+
+        if (employer[0].length === 0) {
+            return next(
+                new ApiError(
+                    'Email or password is incorrect!',
+                    httpStatus.BAD_REQUEST
+                )
+            );
+        }
+
+        const employerObject = employer[0][0];
+
+        // const validPassword = await bcrypt.compare(
+        //     req.body.password,
+        //     employerObject.Password
+        // );
+
+        const validPassword = employerObject.Password === req.body.password;
+
+        if (!validPassword) {
+            return next(
+                new ApiError('Email or passwors is incorrect!'),
+                httpStatus.BAD_REQUEST
+            );
+        }
+
+        const access_token = createLoginToken(employerObject, res);
+
+        ApiDataSuccess.send('Login succesfull!', httpStatus.OK, res, {
+            access_token: access_token,
+        });
+    } catch (error) {
+        return next(new ApiError(error.message, httpStatus.NOT_FOUND));
+    }
+};
 
 const getEmployers = async (req, res, next) => {
     try {
@@ -117,4 +168,4 @@ const createEmployer = async (req, res, next) => {
     }
 };
 
-module.exports = { getEmployers, getEmployerById, createEmployer };
+module.exports = { getEmployers, getEmployerById, createEmployer, login };
