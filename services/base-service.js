@@ -1,10 +1,17 @@
 const sequelize = require('../scripts/helpers/sequelize.helper');
+const eventEmitter = require('../events/event-emitter.event');
 
-// const AccountType = {
-//   lecturer: 'Lecturer',
-//   student: 'Student',
-//   employer: 'Employer',
-// };
+function sendEmail(email, fullName, password) {
+    eventEmitter.emit('send_email', {
+        to: email,
+        subject: 'linkedKTU verification',
+        template: 'student-password-template',
+        context: {
+            fullName: fullName,
+            password: password,
+        },
+    });
+}
 
 const getAll = async (model) =>
     await sequelize.query(`SELECT * FROM "${model}";`);
@@ -71,4 +78,5 @@ module.exports = {
     // updateByQuery,
     // deleteById,
     // deleteByQuery,
+    sendEmail,
 };

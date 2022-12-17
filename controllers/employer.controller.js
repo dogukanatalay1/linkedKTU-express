@@ -6,10 +6,10 @@ const {
     getOneById,
     create,
     getOneByQuery,
+    sendEmail,
 } = require('../services/base-service');
 const Employer = require('../models/employer.model');
 const { v4: uuidv4 } = require('uuid');
-const eventEmitter = require('../events/event-emitter.event');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 
 const login = async (req, res, next) => {
@@ -133,15 +133,7 @@ const createEmployer = async (req, res, next) => {
         return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
 
-    eventEmitter.emit('send_email', {
-        to: email,
-        subject: 'linkedKTU verification',
-        template: 'student-password-template',
-        context: {
-            fullName: fullname,
-            password: password,
-        },
-    });
+    sendEmail(email, fullname, password);
 
     ApiDataSuccess.send(
         'Employer created succesfully!',

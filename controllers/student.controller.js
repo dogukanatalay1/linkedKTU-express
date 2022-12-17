@@ -8,11 +8,11 @@ const {
     getOneById,
     getAllByQuery,
     create,
+    sendEmail,
 } = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
 const Student = require('../models/student.model');
 const passwordHelper = require('../scripts/helpers/password.helper');
-const eventEmitter = require('../events/event-emitter.event');
 const { v4: uuidv4 } = require('uuid');
 
 const login = async (req, res, next) => {
@@ -78,16 +78,6 @@ const createStudent = async (req, res, next) => {
     const studentPassword = (await passwordHelper.passwordToHash(password))
         .hashedPassword;
 
-    eventEmitter.emit('send_email', {
-        to: email,
-        subject: 'linkedKTU verification',
-        template: 'student-password-template',
-        context: {
-            fullName: fullname,
-            password: studentPassword,
-        },
-    });
-
     const studentData = {
         ID: uuidv4(),
         Email: email,
@@ -101,6 +91,8 @@ const createStudent = async (req, res, next) => {
         City: city,
         ContactMail: contactmail,
     };
+
+    sendEmail(email, fullname, studentPassword);
 
     const createdStudent = await create(Student.name, studentData);
 
