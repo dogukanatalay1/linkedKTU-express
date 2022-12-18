@@ -1,6 +1,8 @@
+/* eslint-disable no-undef */
 const ApiError = require('../../scripts/responses/error/api-error');
 const httpStatus = require('http-status');
 
+// This functiont doensn't work as expected!!! YET
 const controlQueryResult = (array, next, msg) => {
     return new Promise(function (resolve, reject) {
         if (array[0].length === 0) {
