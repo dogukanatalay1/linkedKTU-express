@@ -3,7 +3,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../scripts/responses/error/api-error');
 
 module.exports = async function (req, res, next) {
-    const token = req.headers?.authorization?.split(' ')[1];
+    const token = req.headers.token;
 
     if (!token) {
         return next(

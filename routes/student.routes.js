@@ -3,7 +3,9 @@ const studentController = require('../controllers/student.controller');
 const router = express.Router();
 const bodyValidator = require('../middlewares/body-validator.middleware');
 const schema = require('../validations/student.validation');
+// const authanticate = require('../middlewares/authentication.middleware');
 
+// router.route('/').get(authanticate, studentController.getStudents);
 router.route('/').get(studentController.getStudents);
 
 router.route('/:id').get(studentController.getStudentById);
