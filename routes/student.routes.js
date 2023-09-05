@@ -1,22 +1,23 @@
 const express = require('express');
 const studentController = require('../controllers/student.controller');
-
 const router = express.Router();
-
 const bodyValidator = require('../middlewares/body-validator.middleware');
 const schema = require('../validations/student.validation');
+// const authanticate = require('../middlewares/authentication.middleware');
+
+// router.route('/').get(authanticate, studentController.getStudents);
+router.route('/').get(studentController.getStudents);
+
+router.route('/:id').get(studentController.getStudentById);
 
 router
-  .route('/login')
-  .post(studentController.login);
-  // .post(bodyValidator(schema.loginValidation), studentController.login);
+    .route('/auth/login')
+    .post(bodyValidator(schema.loginValidation), studentController.login);
+
+router.route('/auth/register').post(studentController.createStudent);
 
 router
-   .route('/')
-   .get(studentController.getAllStudents)
-
-router
-  .route('/:id')
-  .get(studentController.getStudent)
+    .route('/technologies/:technology')
+    .get(studentController.getStudentsByTechnology);
 
 module.exports = router;

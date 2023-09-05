@@ -1,38 +1,59 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../scripts/helpers/sequelize.helper');
+const BaseUser = require('./base-user.model');
+const Post = require('./post.model');
+const JobPost = require('./job-post.model');
+const Lecturer = require('./lecturer.model');
 
-const StudentModel = sequelize.define(
-  'StudentModel',
-  {
-    _id: {
-      type: DataTypes.STRING,
-      allowNull: false,
+const Student = sequelize.define(
+    'Student',
+    {
+        school: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        technologies: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: false,
+        },
+        languages: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+        },
+        experience: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            references: {
+                model: Post,
+                key: 'id',
+            },
+        },
+        appliedJobs: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            references: {
+                model: JobPost,
+                key: 'id',
+            },
+        },
+        lecturersThatApproved: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            references: {
+                model: Lecturer,
+                key: 'id',
+            },
+        },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    {
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci',
+        freezeTableName: true
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    {
+        parent: BaseUser,
+        hasMany: Post,JobPost,Lecturer
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    accountType: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    charset: 'utf8',
-    collate: 'utf8_unicode_ci',
-  },
 );
 
-module.exports = StudentModel;
+module.exports = Student;

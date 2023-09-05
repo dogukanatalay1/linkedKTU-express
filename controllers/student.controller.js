@@ -1,151 +1,180 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../scripts/responses/error/api-error');
-const ApiSuccess = require('../scripts/responses/success/api-success');
 const ApiDataSuccess = require('../scripts/responses/success/api-data-success');
-const { getOneByQuery, updateByQuery } = require('../services/base-service');
+const {
+    getOneByQuery,
+    getAll,
+    getOneById,
+    getAllByQuery,
+    create,
+} = require('../services/base-service');
 const { createLoginToken } = require('../scripts/helpers/jwt.helper');
-const StudentModel = require('../models/student.model')
+const Student = require('../models/student.model');
+const passwordHelper = require('../scripts/helpers/password.helper');
+const { v4: uuidv4 } = require('uuid');
+const { sendEmail } = require('../scripts/helpers/send-email.helper');
 
-const login = async (req, res) => {
-    console.log(req.body);
-
-    const student = await getOneByQuery(StudentModel, {
+const login = async (req, res, next) => {
+    const student = await getOneByQuery(Student.name, {
         email: req.body.email,
     });
 
     if (student <= 0) {
-        const error = new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res);
-        res.send(error)
-        throw Error(error);
+        return next(
+            new ApiError(
+                'Email or password is incorrect',
+                httpStatus.BAD_REQUEST
+            )
+        );
     }
 
-    // const validPassword = await bcrypt.compare(
-    //     req.body.password,
-    //     student.password
-    // );
+    const validPassword = await bcrypt.compare(
+        req.body.password,
+        student.password
+    );
 
-    // if (!validPassword) {
-    //     const error = new ApiError('Email or password is incorrect', httpStatus.BAD_REQUEST, res).toJSON();
-    //     res.send(error)
-    //     throw Error(error);
-    // }
+    if (!validPassword) {
+        return next(
+            new ApiError(
+                'Email or password is incorrect',
+                httpStatus.BAD_REQUEST
+            )
+        );
+    }
 
-    // ? Create And Assign A Token
-    // const token = createLoginToken(student, res);
-    // await ???
+    const access_token = createLoginToken(student, res);
 
-    const success = new ApiDataSuccess(
-        'Login Success',
-        // { access_token: token },
-        { access_token: 'dasdsa' },
-        true,
-        httpStatus.OK,
-        res
-    )
-    success.send()
+    ApiDataSuccess.send('Login succesfull', httpStatus.OK, res, access_token);
 };
 
-let students = [
-    {
-        id: 0,
-        email: 'dogukanatalay46@gmail.com',
-        password: '1234',
-        name: 'dgosu',
-        description: 'Sr. Backend dev. at Teknasyon, author in Udemy',
-        image: 'https://media-exp1.licdn.com/dms/image/D4D03AQHwjZudYwrfjw/profile-displayphoto-shrink_800_800/0/1665486077397?e=1675296000&v=beta&t=4M3CiuO43MgEXRUQ_CXq-axqz3sPUTnsvgqvuEommI8',
-        ContactInfo: {
-            id: 0,
-            email: 'dogukanatalay46@gmail.com',
-            phone: '0538 427 2743',
-            address: 'Trabzon kanuni kampüsü, kanuni yurdu'
-        },
-        school: 'KTU',
-        city: 'Trabzon',
-        technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['guzin ulutas']
-    },
-    {
-        id: 1,
-        email: 'ertbil@gmail.com',
-        password: '1234',
-        name: 'ertbil',
-        description: 'Sr. Flutter dev. and Algoritm expert at DeutchCode',
-        image: 'https://media-exp1.licdn.com/dms/image/C4E03AQGOBhpgEqEAsg/profile-displayphoto-shrink_800_800/0/1634920916672?e=1675296000&v=beta&t=vkJa3d8aSRbdIOmZmI8tTAf8tyhEkgEIqeMP0NYdU6I',
-        ContactInfo: {
-            id: 1,
-            email: 'ertbil@gmail.com',
-            phone: '0538 427 2743',
-            address: 'Trabzon kanuni kampüsü, kanuni yurdu'
-        },
-        school: 'KTU',
-        city: 'Trabzon',
-        technologies: ['flutter', 'dart', 'Java', 'leetcode'],
-        experience: 'calismadim',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['mustafa ulutas']
-    },
-    {
-        id: 2,
-        email: 'yavuz@gmail.com',
-        password: '1234',
-        name: 'yavuz',
-        description: 'Sr. Embedded System engineer at Siemens',
-        image: 'https://media-exp1.licdn.com/dms/image/C5603AQF63OAAfUcrcw/profile-displayphoto-shrink_800_800/0/1648034235334?e=1675296000&v=beta&t=wwGIbsiCRdTwi3Bh7fU87Im9Cy7CIvF4yrfit_QR53U',
-        ContactInfo: {
-            id: 2,
-            email: 'yavuz@gmail.com',
-            phone: '0538 427 2743',
-            address: 'Trabzon kanuni kampüsü, kanuni yurdu'
-        },
-        school: 'KTU',
-        city: 'Trabzon',
-        technologies: ['C', 'C++', 'FPGA'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['Sedat Gormus']
-    },
-    {
-        id: 3,
-        email: 'dogukanatalay46@gmail.com',
-        password: '1234',
-        name: 'dgosu',
-        description: 'Sr. Backend dev. at Teknasyon, author in Udemy',
-        image: 'https://media-exp1.licdn.com/dms/image/D4D03AQHwjZudYwrfjw/profile-displayphoto-shrink_800_800/0/1665486077397?e=1675296000&v=beta&t=4M3CiuO43MgEXRUQ_CXq-axqz3sPUTnsvgqvuEommI8',
-        ContactInfo: {
-            id: 0,
-            email: 'dogukanatalay46@gmail.com',
-            phone: '0538 427 2743',
-            address: 'Trabzon kanuni kampüsü, kanuni yurdu'
-        },
-        school: 'KTU',
-        city: 'Trabzon',
-        technologies: ['JS', 'Express.js', 'Vue.js', 'MongoDB'],
-        experience: 'calisitm',
-        appliedJobs: ['a', 'b'],
-        lecturersThatApproved: ['guzin ulutas']
-    }
-]
+const createStudent = async (req, res, next) => {
+    let student;
 
-getAllStudents = (req, res) => {
-    res.status(200).json(students)
-}
-
-getStudent = (req, res) => {
-    const { id } = req.params
-
-    const student = students.find((student) => id == student.id)
-
-    if(!student) {
-        return res.status(404).json({
-            message: `there is no student with this id: ${id}`,
-            success: false
-        })
+    try {
+        student = await getOneByQuery(Student.name, 'Email', req.body.email);
+    } catch (error) {
+        return next(new ApiError(error.message, httpStatus.NOT_FOUND));
     }
 
-    res.status(200).send(student)
-}
+    if (!student[0].length === 0) {
+        return next(
+            new ApiError('This email already in use!', httpStatus.BAD_REQUEST)
+        );
+    }
 
-module.exports = { login, getAllStudents, getStudent }
+    const studentPassword = await passwordHelper.passwordToHash(
+        req.body.password
+    );
+
+    const studentData = {
+        ID: uuidv4(),
+        Email: req.body.email,
+        Password: studentPassword.hashedPassword,
+        Fullname: req.body.fullname,
+        Description: req.body.description,
+        Image: req.body.image,
+        Phone: req.body.phone,
+        Address: req.body.address,
+        School: req.body.school,
+        City: req.body.city,
+        ContactMail: req.body.contactmail,
+    };
+
+    sendEmail(studentData.Email, studentData.Fullname, studentData.Password);
+
+    const createdStudent = await create(Student.name, studentData);
+
+    ApiDataSuccess.send(
+        'Student created succesfully!',
+        httpStatus.OK,
+        res,
+        createdStudent
+    );
+};
+
+const getStudents = async (req, res, next) => {
+    let result;
+
+    try {
+        result = await getAll(Student.name);
+    } catch (error) {
+        return next(new ApiError(error.message, httpStatus.NOT_FOUND));
+    }
+
+    if (!result[0].length === 0) {
+        return next(
+            new ApiError('There have been an error', httpStatus.BAD_REQUEST)
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Students fetched succesfully',
+        httpStatus.OK,
+        res,
+        result[0]
+    );
+};
+
+const getStudentById = async (req, res, next) => {
+    const { id } = req.params;
+    let student;
+
+    try {
+        student = await getOneById(Student.name, id, next);
+    } catch (error) {
+        return next(new ApiError(error.message, httpStatus.NOT_FOUND));
+    }
+
+    if (student[0].length === 0) {
+        return next(
+            new ApiError('There have been an error!', httpStatus.NOT_FOUND)
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Student with given id found',
+        httpStatus.OK,
+        res,
+        student[0]
+    );
+};
+
+const getStudentsByTechnology = async (req, res, next) => {
+    const { technology } = req.params;
+    let studentsWithGivenTech;
+
+    try {
+        studentsWithGivenTech = await getAllByQuery(
+            Student.name,
+            'Technologies',
+            technology
+        );
+    } catch (error) {
+        return next(new ApiError(error.message, httpStatus.NOT_FOUND));
+    }
+
+    if (studentsWithGivenTech[0].length === 0) {
+        return next(
+            new ApiError(
+                `There is no student with given tech ${technology}`,
+                httpStatus.BAD_REQUEST
+            )
+        );
+    }
+
+    ApiDataSuccess.send(
+        'Students with given skill found',
+        httpStatus.OK,
+        res,
+        studentsWithGivenTech[0]
+    );
+};
+
+module.exports = {
+    login,
+    getStudents,
+    getStudentById,
+    getStudentsByTechnology,
+    createStudent,
+};

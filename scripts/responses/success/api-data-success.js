@@ -1,20 +1,11 @@
-const ApiSuccess = require('./api-success');
-
-class ApiDataSuccess extends ApiSuccess {
-  static toJSON(data, message, statusCode) {
-    const successResponse = ApiSuccess.toJSON(message, statusCode);
-
-    return {
-      ...successResponse,
-      data,
-    };
-  }
-
-  send(data, message, statusCode, res) {
-    return res
-      // .status(statusCode)
-      // .json(ApiDataSuccess.toJSON(data, message, statusCode));
-  }
+class ApiDataSuccess {
+    static send(message, statusCode, res, data) {
+        res.status(statusCode).json({
+            data,
+            message,
+            success: true,
+        });
+    }
 }
 
 module.exports = ApiDataSuccess;
